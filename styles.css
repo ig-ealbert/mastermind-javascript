@@ -1,0 +1,14 @@
+#guessHistory {
+	width: 600px;
+	height: 600px;
+	overflow-y: auto;
+	padding-top: 10px;
+}
+
+#buttonsAndMessage {
+	padding-bottom: 10px;
+}
+
+.greenBorder {
+	border: 2px solid green;
+}
