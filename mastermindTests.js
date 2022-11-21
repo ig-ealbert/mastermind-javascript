@@ -1,39 +1,39 @@
 QUnit.test( "Clicking on a white guess space changes it to black", function( assert ) {
-  var guessSpace = document.getElementById("guessRow").childNodes[1];
+  const guessSpace = document.getElementById("guessRow").childNodes[1];
   changeColor(guessSpace);
   assert.equal( guessSpace.style.fill, "black", "The default white space becomes black on click." );
 });
 
 QUnit.test( "Clicking on a black guess space changes it to blue", function( assert ) {
-  var guessSpace = document.getElementById("guessRow").childNodes[1];
+  const guessSpace = document.getElementById("guessRow").childNodes[1];
   guessSpace.style.fill = "black";
   changeColor(guessSpace);
   assert.equal( guessSpace.style.fill, "blue", "The black space becomes blue on click." );
 });
 
 QUnit.test( "Clicking on a blue guess space changes it to green", function( assert ) {
-  var guessSpace = document.getElementById("guessRow").childNodes[1];
+  const guessSpace = document.getElementById("guessRow").childNodes[1];
   guessSpace.style.fill = "blue";
   changeColor(guessSpace);
   assert.equal( guessSpace.style.fill, "green", "The blue space becomes green on click." );
 });
 
 QUnit.test( "Clicking on a green guess space changes it to red", function( assert ) {
-  var guessSpace = document.getElementById("guessRow").childNodes[1];
+  const guessSpace = document.getElementById("guessRow").childNodes[1];
   guessSpace.style.fill = "green";
   changeColor(guessSpace);
   assert.equal( guessSpace.style.fill, "red", "The green space becomes red on click." );
 });
 
 QUnit.test( "Clicking on a red guess space changes it to yellow", function( assert ) {
-  var guessSpace = document.getElementById("guessRow").childNodes[1];
+  const guessSpace = document.getElementById("guessRow").childNodes[1];
   guessSpace.style.fill = "red";
   changeColor(guessSpace);
   assert.equal( guessSpace.style.fill, "yellow", "The red space becomes yellow on click." );
 });
 
 QUnit.test( "Clicking on a yellow guess space changes it to white", function( assert ) {
-  var guessSpace = document.getElementById("guessRow").childNodes[1];
+  const guessSpace = document.getElementById("guessRow").childNodes[1];
   guessSpace.style.fill = "yellow";
   changeColor(guessSpace);
   assert.equal( guessSpace.style.fill, "white", "The yellow space becomes white on click." );
@@ -104,9 +104,8 @@ QUnit.test( "The number of white pegs is correctly calculated when the colors ar
   answerColors = [0, 0, 0, 1, 2, 1];
   answer = ["red", "yellow", "red", "green"];
   currentGuess = ["green", "yellow", "red", "yellow"];
-  var remainingColors = calculateRemainingColors(currentGuess);
-  var black = calculateBlackPegs(currentGuess);
-  var white = calculateWhitePegs(currentGuess, remainingColors);
+  const remainingColors = calculateRemainingColors();
+  const white = calculateWhitePegs(remainingColors);
   assert.equal( white, 1, "There is only 1 white peg because there is no second yellow space." );
 });
 
@@ -115,9 +114,8 @@ QUnit.test( "The number of white pegs is correctly calculated when there are 3 b
   answerColors = [0, 1, 0, 1, 2, 0];
   answer = ["red", "black", "green", "red"];
   currentGuess = ["yellow", "black", "green", "red"];
-  var remainingColors = calculateRemainingColors(currentGuess);
-  var black = calculateBlackPegs(currentGuess);
-  var white = calculateWhitePegs(currentGuess, remainingColors);
+  const remainingColors = calculateRemainingColors();
+  const white = calculateWhitePegs(remainingColors);
   assert.equal( white, 0, "There are no yellow spaces and all the other spaces are correct, so no colors are in the wrong place." );
 });
 
@@ -126,9 +124,8 @@ QUnit.test( "The number of white pegs is correctly calculated when there are 2 b
   answerColors = [0, 1, 0, 1, 2, 0];
   answer = ["red", "black", "green", "red"];
   currentGuess = ["green", "black", "yellow", "red"];
-  var remainingColors = calculateRemainingColors(currentGuess);
-  var black = calculateBlackPegs(currentGuess);
-  var white = calculateWhitePegs(currentGuess, remainingColors);
+  const remainingColors = calculateRemainingColors();
+  const white = calculateWhitePegs(remainingColors);
   assert.equal( white, 1, "There are no yellow spaces and the black and red pegs are correctly placed, so only the green space is out of place." );
 });
 
@@ -149,41 +146,42 @@ QUnit.test( "A random pattern is chosen when the game starts", function (assert 
 
 QUnit.test( "After a pattern is guessed, the history is updated with that pattern and feedback", function (assert ) {
   initializeGame();
-  var guessSpace;
-  for (var i = 1; i <= 7; i=i+2) {
-	guessSpace = document.getElementById("guessRow").childNodes[i];
-	guessSpace.style.fill = "green";
+  let guessSpace;
+  for (let i = 1; i <= 7; i = i + 2) {
+	  guessSpace = document.getElementById("guessRow").childNodes[i];
+	  guessSpace.style.fill = "green";
   }
   guessPatternFromUI();
-  var currentRow = document.getElementById("activeGuess");
-  var history = document.getElementById("guessHistory");
-  var historyRow = currentRow.cloneNode(true);
-	for (var i = 1; i <= 7; i=i+2) {
+  const currentRow = document.getElementById("activeGuess");
+  const historyRow = currentRow.cloneNode(true);
+	for (let i = 1; i <= 7; i = i + 2) {
 		historyRow.childNodes[1].childNodes[i].removeAttribute("onclick");
 	}
-  assert.equal(history.innerHTML, "<div>" + historyRow.innerHTML + "</div>", "The current guess should be copied to the history.");
+  assert.equal(history.innerHTML, `<div>${historyRow.innerHTML}</div>`, "The current guess should be copied to the history.");
 });
 
 QUnit.test( "An entry in the history is read-only", function (assert ) {
   initializeGame();
-  var guessSpace;
-  for (var i = 1; i <= 7; i=i+2) {
-	guessSpace = document.getElementById("guessRow").childNodes[i];
-	guessSpace.style.fill = "green";
+  let guessSpace;
+  for (let i = 1; i <= 7; i = i + 2) {
+	  guessSpace = document.getElementById("guessRow").childNodes[i];
+	  guessSpace.style.fill = "green";
   }
   guessPatternFromUI();
-  var currentRow = document.getElementById("activeGuess");
-  var historyRow = currentRow.cloneNode(true);
-	for (var i = 1; i <= 7; i=i+2) {
+  const currentRow = document.getElementById("activeGuess");
+  const historyRow = currentRow.cloneNode(true);
+	for (let i = 1; i <= 7; i = i + 2) {
 		historyRow.childNodes[1].childNodes[i].removeAttribute("onclick");
 	}
-  var history = document.getElementById("guessHistory");
-  var historySpace = history.childNodes[0].childNodes[1].childNodes[1];
+  const historySpace = history.childNodes[0].childNodes[1].childNodes[1];
   // Can't simply click on an SVG element
-  var event = document.createEvent("SVGEvents");
-  event.initEvent("click",true,true);
+  const event = new MouseEvent("click", {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+  });
   historySpace.dispatchEvent(event);
-  assert.equal(history.innerHTML, "<div>" + historyRow.innerHTML + "</div>", "The history guess should not change on click.");
+  assert.equal(history.innerHTML, `<div>${historyRow.innerHTML}</div>`, "The history guess should not change on click.");
 });
 
 QUnit.test( "After a pattern is guessed, there is one less remaining guess", function (assert ) {
@@ -191,7 +189,7 @@ QUnit.test( "After a pattern is guessed, there is one less remaining guess", fun
   answerColors = [0, 1, 0, 1, 2, 0];
   answer = ["red", "black", "green", "red"];
   currentGuess = ["black", "black", "black", "black"];
-  guessPattern(currentGuess);
+  guessPattern();
   assert.equal( remainingGuesses, 9, "Instead of 10 remaining guesses, now there are 9." );
 });
 
@@ -200,7 +198,7 @@ QUnit.test( "After a pattern is guessed, a message displays how many guesses you
   answerColors = [0, 1, 0, 1, 2, 0];
   answer = ["red", "black", "green", "red"];
   currentGuess = ["black", "black", "black", "black"];
-  guessPattern(currentGuess);
+  guessPattern();
   assert.equal( message.innerHTML, "You have 9 guesses left.", "Instead of 10 remaining guesses, now there are 9." );
 });
 
@@ -210,7 +208,7 @@ QUnit.test( "A grammatically correct message is displayed if you have only one g
   remainingGuesses = 2;
   answer = ["red", "black", "green", "red"];
   currentGuess = ["black", "black", "black", "black"];
-  guessPattern(currentGuess);
+  guessPattern();
   assert.equal( message.innerHTML, "You have 1 guess left.", "You only have 1 guess left." );
 });
 
