@@ -1,28 +1,39 @@
 import { guessHistoryParams } from "@/types/guessHistoryParams";
 import GuessCircle from "./guessCircle";
-import { BIG_RADIUS, SMALL_RADIUS } from "@/constants";
+import {
+  MEDIUM_RADIUS,
+  TINY_RADIUS,
+  LEFT_X,
+  RIGHT_X,
+  TOP_Y,
+  BOTTOM_Y,
+  CIRCLE_INDICES,
+} from "@/constants";
 
 export default function GuessHistory(params: guessHistoryParams) {
-  const MEDIUM_RADIUS = BIG_RADIUS / 2;
-  const TINY_RADIUS = SMALL_RADIUS / 2;
-
   return (
     <div id="guessHistory">
       {params.guesses.map((guess: string[], index: number) => (
         <div key={`guess${index}`}>
           <svg xmlns="http://www.w3.org/2000/svg" width="550px" height="82px">
-            <GuessCircle x={55} y={55} radius={MEDIUM_RADIUS} fill={guess[0]} />
-            <GuessCircle x={125} y={55} radius={MEDIUM_RADIUS} fill={guess[1]} />
-            <GuessCircle x={195} y={55} radius={MEDIUM_RADIUS} fill={guess[2]} />
-            <GuessCircle x={265} y={55} radius={MEDIUM_RADIUS} fill={guess[3]} />
-            {params.feedbacks[index][0] &&
-              <GuessCircle x={315} y={35} radius={TINY_RADIUS} fill={params.feedbacks[index][0]} />}
-            {params.feedbacks[index][1] &&
-              <GuessCircle x={335} y={35} radius={TINY_RADIUS} fill={params.feedbacks[index][1]} />}
-            {params.feedbacks[index][2] &&
-              <GuessCircle x={315} y={55} radius={TINY_RADIUS} fill={params.feedbacks[index][2]} />}
-            {params.feedbacks[index][3] &&
-              <GuessCircle x={335} y={55} radius={TINY_RADIUS} fill={params.feedbacks[index][3]} />}
+            {CIRCLE_INDICES.map((circleIndex) => (
+              <GuessCircle
+                key={`guess${index}Circle${circleIndex}`}
+                x={55 + 70 * circleIndex}
+                y={BOTTOM_Y}
+                radius={MEDIUM_RADIUS}
+                fill={guess[circleIndex]}
+              />
+            ))}
+            {CIRCLE_INDICES.map((circleIndex) => (
+              <GuessCircle
+                key={`guess${index}Feedback${circleIndex}`}
+                x={circleIndex % 2 === 0 ? LEFT_X : RIGHT_X}
+                y={circleIndex < 2 ? TOP_Y : BOTTOM_Y}
+                radius={TINY_RADIUS}
+                fill={params.feedbacks[index][circleIndex] || "lightgray"}
+              />
+            ))}
           </svg>
         </div>
       ))}
