@@ -1,6 +1,10 @@
-import { describe, it } from "@jest/globals"
+import { describe, it } from "@jest/globals";
 import assert from "node:assert";
-import { calculateBlackPegs, calculateRemainingColors, calculateWhitePegs } from "./scoring";
+import {
+  calculateBlackPegs,
+  calculateRemainingColors,
+  calculateWhitePegs,
+} from "./scoring";
 
 describe("Scoring helper functions", () => {
   it("Calculates black pegs", () => {
@@ -29,7 +33,6 @@ describe("Scoring helper functions", () => {
   it("Calculates white pegs none", () => {
     const guess = ["white", "black", "green", "blue"];
     const answer = ["white", "blue", "red", "blue"];
-    const remaining = [0, 0, 1, 0, 1, 0];
     const whitePegs = calculateWhitePegs([], guess, answer);
     assert.deepStrictEqual(whitePegs, 0);
   });
